@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
+using MonoGame.Extended.ViewportAdapters;
+using MonoGame.Extended.Maps.Tiled;
 
 namespace Redeemer
 {
@@ -11,6 +14,9 @@ namespace Redeemer
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        TiledMap TestMap;
+        Camera2D _camera;
+        ViewportAdapter _viewportAdapter;
 
         public Game1()
         {
@@ -26,7 +32,10 @@ namespace Redeemer
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            _viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, 800, 480);
+            _camera = new Camera2D(_viewportAdapter);
+
+            TestMap = Content.Load<TiledMap>("Assets/Maps/LocomotionTest");
 
             base.Initialize();
         }
@@ -76,7 +85,9 @@ namespace Redeemer
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            spriteBatch.Begin();
+            TestMap.Draw(_camera);
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
